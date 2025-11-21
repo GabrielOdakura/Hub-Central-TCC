@@ -1,0 +1,43 @@
+# 📚 Hub de Repositórios – Projeto TCC
+
+Bem-vindo ao Hub de Repositórios do meu Trabalho de Conclusão de Curso (TCC).
+Este repositório central reúne e organiza todos os componentes, serviços, APIs e programas.
+
+# 📁 Estrutura dos Repositórios
+
+Abaixo estão os repositórios separados por categoria, com uma breve descrição de cada um para facilitar acesso.
+
+# 🔧 Backend / Servidores / APIs
+Reconhecimento Facial
+- [Repositório de Reconhecimento Facial](https://github.com/GabrielOdakura/Reconhecimento_Facial_TCC)
+
+Site de cadastro
+- [Site de Cadastro para o TCC](https://github.com/Brenex000006/Site-de-teste-para-TCC)
+
+☁️ Infraestrutura na AWS
+- Lambdas
+    - [Lambda Autoriza](https://github.com/GabrielOdakura/Lambda_Face_Recog)
+    - [Lambda Sync-Arqs] ()
+    - [Lambda Notifica-Usuarios] ()
+
+# 📌 Sobre o Projeto
+
+Este TCC consiste em (coloque uma explicação curta do seu tema).
+Utiliza tecnologias como:
+
+- AWS (Lambda, RDS, SNS, S3, IAM…)
+- Reconhecimento Facial (DeepFace / OpenCV)
+- Sistema embarcado (Rock 5C)
+- MySQL
+- Flask / React / Python
+- Integração IoT + Cloud
+
+# 🧑‍💻 Autores
+
+Gabriel Odakura - [Link Github](https://github.com/gabrielodakura)
+
+Breno Rodrigues - [Link Github](https://github.com/Brenex000006)
+
+Pedro Marques   - [Link Github](https://github.com/Zogis4)
+
+Graduando em Ciência da Computação – Pontifícia Universidade Católica de São Paulo
