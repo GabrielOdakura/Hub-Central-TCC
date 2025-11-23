@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  title: API de Integração com Lambdas do Sistema de Automação e Segurança
+  version: "1.0.0"
+  description: |
+    Esta API é disponibilizada via Amazon API Gateway e integra o sistema às Lambdas responsáveis por autenticação facial, envio de notificações e sincronização de arquivos.
+    Todas as rotas utilizam JSON como formato de entrada e saída.
+
+servers:
+  - url: https://api.não.divulgada/prod
+    description: API Gateway em produção
+
+paths:
+
+  /autentica:
+    post:
+      summary: Autentica usuário através de reconhecimento facial
+      description: |
+        Encaminha um payload encryptado que será descryptado pela Lambda que contém o usuário e a conta cadastrada.
+      operationId: autenticaUsuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: string encryptada com usuário e cadastro.
+              required:
+                - user
+            example:
+              user: "eboCFHrVFbAn12ZVbi0IZ3LlY+vKhDrkOkajvp2gVWskfWDiUPsTN0jyTinvFYZF/U+UgmtWhCp4q6u4V8eQiElCRzcMPi2Ba2vFRmbWzQKHX7AfqP88TNsnb8Efgon3/Muc8xYSSXZxhoKvuA970NtfKmFAzRekCDdhJ31PyS+jZXnRwVGcutf1W9Vgt2CRTmoDLz9NlJNZ3EpHnnYH7TsDMEXnQJtWEhaBqDICYqseTcB720q/tIX/MBIfwtsYhrSuSM0YfOniqvzb5+YAvjjhTRsGN0mIoFkqXSyJryC1dG5JGq/mVOjtk4Q+Q80r+BdlUYrREG08hFr0I6zKSA=="
+      responses:
+        "200":
+          description: Resultado da autenticação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+              example:
+                status_code: 200
+        "401":
+          description: Usuário Não Identificado
+        "500":
+          description: Internal Server Error
+
+  /notifica-usuarios:
+    post:
+      summary: Envia notificações para usuários cadastrados
+      description: |
+        Encaminha uma mensagem JSON para a Lambda **lbd-notifica-usuarios**,  
+        que então publica o conteúdo em um tópico SNS, enviando e-mail e SMS aos assinantes.
+      operationId: notificarUsuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensagem:
+                  type: string
+                  description: Corpo da mensagem.
+              required:
+                - titulo
+                - mensagem
+            example:
+              mensagem: "[SENSOR DE MOVIMENTO] Alerta. Movimento detectado"
+      responses:
+        "200":
+          description: Notificação enviada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                example:
+                  status: 200
+        "400":
+          description: Requisição inválida
+        "500":
+          description: Erro ao publicar no SNS ou falha da Lambda
+
+  /sincroniza-arqs:
+    post:
+      summary: Sincroniza arquivos e logs no bucket S3 do cliente
+      description: |
+        Rota integrada à Lambda **lbd-sincroniza-arqs**, que recebe metadados, arquivos ou logs em JSON e armazena no S3 do cliente cadastrado.
+      operationId: sincronizarArquivos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_cliente:
+                  type: string
+                  description: Identificador do cliente.
+                tipo_arquivo:
+                  type: string
+                  enum: [LOG, CAPTURA, RELATORIO]
+                conteudo:
+                  type: string
+                  description: Conteúdo do arquivo codificado em Base64.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: Metadados adicionais do arquivo.
+              required:
+                - id_cliente
+                - tipo_arquivo
+                - conteudo
+      responses:
+        "200":
+          description: Arquivo sincronizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  caminho_s3:
+                    type: string
+                example:
+                  status: "Arquivo salvo"
+                  caminho_s3: "s3://bucket-do-cliente/logs/2025-11-21_23-11-00.json"
+        "400":
+          description: Requisição inválida
+        "500":
+          description: Erro ao salvar no S3
