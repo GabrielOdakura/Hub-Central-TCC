@@ -8,13 +8,13 @@ Este repositório central reúne e organiza todos os componentes, serviços, API
 Abaixo estão os repositórios separados por categoria, com uma breve descrição de cada um para facilitar acesso.
 
 # 🔧 Backend / Servidores / APIs
-Reconhecimento Facial
+Reconhecimento Facial:
 - [Repositório de Reconhecimento Facial](https://github.com/GabrielOdakura/Reconhecimento_Facial_TCC)
 
 Site de cadastro
 - [Site de Cadastro para o TCC](https://github.com/Brenex000006/Site-de-teste-para-TCC)
 
-☁️ Infraestrutura na AWS
+☁️ Infraestrutura na AWS:
 - Lambdas
     - [Lambda Autoriza](https://github.com/GabrielOdakura/Lambda_Face_Recog)
     - [Lambda Sync-Arqs] ()
